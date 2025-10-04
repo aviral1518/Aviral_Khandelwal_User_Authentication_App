@@ -1,26 +1,68 @@
 # User Authentication App
 
-A React Native application with user authentication functionality using Context API for state management.
+A React Native application demonstrating modern authentication, secure storage, and theming capabilities using industry best practices.
 
 ## Features
 
-- **User Authentication** using Context API
-- **Login Screen** with email and password validation
-- **Signup Screen** with name, email, and password validation
-- **Home Screen** displaying user information
-- **Persistent Authentication** using AsyncStorage
+### Authentication & Security
+- **Secure User Authentication** using Context API
+- **Encrypted Data Storage** using CryptoJS and AsyncStorage
+- **Secure Password Management** with react-native-keychain
+- **Form Validation** using react-hook-form and yup schema validation
+- **Persistent Authentication** with encrypted storage
+
+### User Interface
+- **Dark/Light Theme Support** with react-native-paper
+- **Theme Toggle** with persistent theme preference
+- **Material Design Components** from react-native-paper
+- **Responsive Layouts** using react-native-safe-area-context
 - **Password Visibility Toggle** for better user experience
-- **Form Validation** with error messages
-- **Navigation** between screens using React Navigation
+
+### Screens
+- **Login Screen**
+  - Email and password validation
+  - Error handling with visual feedback
+  - "Remember Me" functionality
+  
+- **Signup Screen**
+  - Name, email, and password validation
+  - Real-time form validation
+  - Duplicate email checking
+  
+- **Home Screen**
+  - User information display
+  - Theme toggle switch
+  - Secure logout functionality
+
+### Developer Experience
+- **TypeScript** for type safety and better development experience
+- **Form Management** with react-hook-form for performance and reliability
+- **Schema Validation** using yup for consistent data validation
+- **Navigation** using React Navigation v6
+- **Context API** for state management
+- **Debugging Support** with detailed logging for data flow
 
 ## Technologies Used
 
+### Core
 - React Native
 - TypeScript
-- React Navigation
+- React Navigation 6
+
+### State Management & Storage
 - React Context API
 - AsyncStorage
-- React Native Safe Area Context
+- CryptoJS for encryption
+- react-native-keychain
+
+### UI & Components
+- react-native-paper
+- react-native-safe-area-context
+- react-native-vector-icons
+
+### Form Management
+- react-hook-form
+- yup validation
 
 # Getting Started
 
@@ -98,14 +140,62 @@ When you want to forcefully reload, for example to reset the state of your app, 
 ```
 src/
 ├── context/
-│   └── AuthContext.tsx    # Global authentication state management
+│   ├── AuthContext.tsx    # Authentication state management
+│   └── ThemeContext.tsx   # Theme state management
 ├── navigation/
 │   └── AppNavigator.tsx   # Navigation configuration
-└── screens/
-    ├── LoginScreen.tsx    # Login screen with validation
-    ├── SignupScreen.tsx   # Signup screen with validation
-    └── HomeScreen.tsx     # Protected home screen
+├── screens/
+│   ├── LoginScreen.tsx    # Login screen with validation
+│   ├── SignupScreen.tsx   # Signup screen with validation
+│   ├── HomeScreen.tsx     # Protected home screen
+│   └── SplashScreen.tsx   # Initial loading screen
+└── utils/
+    └── secureStorage.ts   # Encrypted storage utility
 ```
+
+## Technical Details
+
+### Secure Storage Implementation
+
+The app implements a secure storage solution using:
+- AsyncStorage for persistent data storage
+- CryptoJS for data encryption
+- Comprehensive logging for debugging
+- Type-safe data retrieval with generics
+
+```typescript
+// Example of secure storage usage
+await secureStorage.setItem('userData', user);
+const userData = await secureStorage.getItem<UserData>('userData');
+```
+
+### Form Management
+
+Forms are implemented using react-hook-form and yup for:
+- Efficient form state management
+- Real-time validation
+- Type-safe form data
+- Reduced re-renders
+- Schema-based validation
+
+```typescript
+const schema = yup.object().shape({
+  email: yup.string().email('Invalid email').required('Email is required'),
+  password: yup.string().min(6, 'Min 6 characters').required('Required'),
+});
+
+const { control, handleSubmit } = useForm<FormData>({
+  resolver: yupResolver(schema)
+});
+```
+
+### Theme System
+
+The app includes a comprehensive theming system:
+- Light and dark theme support
+- Material Design color system
+- Theme persistence
+- Runtime theme switching
 
 ## Features Implementation
 

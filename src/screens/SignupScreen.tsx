@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -37,6 +38,7 @@ const schema = yup.object().shape({
 const SignupScreen: React.FC<Props> = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { signup } = useAuth();
+  const { theme } = useTheme();
 
   const { control, handleSubmit, formState: { errors, isValid } } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -53,12 +55,14 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
     if (error) {
       // You can handle the error here if needed
       console.error(error);
+    } else {
+      navigation.replace('Home');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign Up</Text>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <Text style={[styles.title, { color: theme.colors.primary }]}>Sign Up</Text>
       
       <Controller
         control={control}
@@ -66,14 +70,15 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
         render={({ field: { onChange, value } }) => (
           <>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.surface }]}
               mode="outlined"
               label="Name"
               value={value}
               onChangeText={onChange}
               autoCapitalize="words"
               error={!!errors.name}
-              left={<TextInput.Icon icon="account" />}
+              theme={theme}
+              left={<TextInput.Icon icon="account" color={theme.colors.primary} />}
             />
             {errors.name && (
               <HelperText type="error" visible={!!errors.name}>
@@ -90,7 +95,7 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
         render={({ field: { onChange, value } }) => (
           <>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.surface }]}
               mode="outlined"
               label="Email"
               value={value}
@@ -98,7 +103,8 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
               keyboardType="email-address"
               autoCapitalize="none"
               error={!!errors.email}
-              left={<TextInput.Icon icon="email" />}
+              theme={theme}
+              left={<TextInput.Icon icon="email" color={theme.colors.primary} />}
             />
             {errors.email && (
               <HelperText type="error" visible={!!errors.email}>
@@ -115,7 +121,7 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
         render={({ field: { onChange, value } }) => (
           <>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.surface }]}
               mode="outlined"
               label="Password"
               value={value}
@@ -123,11 +129,13 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
               secureTextEntry={!showPassword}
               autoCapitalize="none"
               error={!!errors.password}
-              left={<TextInput.Icon icon="lock" />}
+              theme={theme}
+              left={<TextInput.Icon icon="lock" color={theme.colors.primary} />}
               right={
                 <TextInput.Icon 
-                  icon={showPassword ? "eye-off" : "eye"} 
+                  icon={showPassword ? "eye-off" : "eye"}
                   onPress={() => setShowPassword(!showPassword)}
+                  color={theme.colors.primary}
                 />
               }
             />
@@ -152,7 +160,9 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
         style={styles.linkButton}
         onPress={() => navigation.navigate('Login')}
       >
-        <Text style={styles.linkText}>Already have an account? Login</Text>
+        <Text style={[styles.linkText, { color: theme.colors.primary }]}>
+          Already have an account? Login
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -163,18 +173,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
-    color: '#1a73e8',
   },
   input: {
     marginBottom: 4,
-    backgroundColor: '#fff',
   },
   button: {
     backgroundColor: '#1a73e8',
