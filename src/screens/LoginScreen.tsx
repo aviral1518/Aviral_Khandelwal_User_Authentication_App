@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -34,6 +35,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [errorVisible, setErrorVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const { login } = useAuth();
+  const { theme } = useTheme();
   
   const { control, handleSubmit, formState: { errors, isValid } } = useForm<FormData>({
     resolver: yupResolver(schema),
@@ -55,8 +57,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome</Text>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <Text style={[styles.title, { color: theme.colors.primary }]}>Welcome</Text>
       
       <Controller
         control={control}
@@ -64,7 +66,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         render={({ field: { onChange, value } }) => (
           <>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.surface }]}
               mode="outlined"
               label="Email"
               value={value}
@@ -72,7 +74,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               keyboardType="email-address"
               autoCapitalize="none"
               error={!!errors.email}
-              left={<TextInput.Icon icon="email" />}
+              theme={theme}
+              left={<TextInput.Icon icon="email" color={theme.colors.primary} />}
             />
             {errors.email && (
               <HelperText type="error" visible={!!errors.email}>
@@ -89,7 +92,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         render={({ field: { onChange, value } }) => (
           <>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.surface }]}
               mode="outlined"
               label="Password"
               value={value}
@@ -97,11 +100,13 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
               secureTextEntry={!showPassword}
               autoCapitalize="none"
               error={!!errors.password}
-              left={<TextInput.Icon icon="lock" />}
+              theme={theme}
+              left={<TextInput.Icon icon="lock" color={theme.colors.primary} />}
               right={
                 <TextInput.Icon 
-                  icon={showPassword ? "eye-off" : "eye"} 
+                  icon={showPassword ? "eye-off" : "eye"}
                   onPress={() => setShowPassword(!showPassword)}
+                  color={theme.colors.primary}
                 />
               }
             />
@@ -126,17 +131,25 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         style={styles.linkButton}
         onPress={() => navigation.navigate('Signup')}
       >
-        <Text style={styles.linkText}>Don't have an account? Sign up</Text>
+        <Text style={[styles.linkText, { color: theme.colors.primary }]}>
+          Don't have an account? Sign up
+        </Text>
       </TouchableOpacity>
 
       <Portal>
-        <Dialog visible={errorVisible} onDismiss={() => setErrorVisible(false)}>
+        <Dialog 
+          visible={errorVisible} 
+          onDismiss={() => setErrorVisible(false)}
+          theme={theme}
+        >
           <Dialog.Title>Error</Dialog.Title>
           <Dialog.Content>
-            <Text>{errorMessage}</Text>
+            <Text style={{ color: theme.colors.error }}>{errorMessage}</Text>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setErrorVisible(false)}>OK</Button>
+            <Button onPress={() => setErrorVisible(false)} theme={theme}>
+              OK
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -149,18 +162,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#fff',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
-    color: '#1a73e8',
   },
   input: {
     marginBottom: 4,
-    backgroundColor: '#fff',
   },
   button: {
     backgroundColor: '#1a73e8',
