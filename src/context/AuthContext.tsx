@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { secureStorage } from '../utils/secureStorage';
 
 interface User {
   name: string;
@@ -28,10 +28,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string): Promise<string> => {
     let allUserData: UserData[] = [];
-    const usersData = await AsyncStorage.getItem('userData');
+    const usersData = await secureStorage.getItem<UserData[]>('userData');
     
     if (usersData) {
-      allUserData = JSON.parse(usersData);
+      allUserData = usersData;
     }
     
     const foundUser = allUserData.find(
@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const userData = { name: foundUser.name, email: foundUser.email };
     setUser(userData);
-    await AsyncStorage.setItem('activeUser', JSON.stringify(userData));
+    await secureStorage.setItem('activeUser', userData);
     return '';
   };
 
@@ -61,13 +61,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return 'Password must be at least 6 characters';
     }
 
-    // Get existing users from AsyncStorage
-    const existingUsersStr = await AsyncStorage.getItem('userData');
-    let existingUsers: Array<{ id: string; name: string; email: string; password: string }> = [];
-    
-    if (existingUsersStr) {
-      existingUsers = JSON.parse(existingUsersStr);
-    }
+    // Get existing users from secure storage
+    const existingUsers = await secureStorage.getItem<UserData[]>('userData') || [];
 
     // Check if email already exists
     if (existingUsers.some(u => u.email === email)) {
@@ -79,18 +74,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     existingUsers.push(newUser);
     
     // Save updated users array
-    await AsyncStorage.setItem('userData', JSON.stringify(existingUsers));
+    await secureStorage.setItem('userData', existingUsers);
     
     // Set active user
     const userData = { name, email };
     setUser(userData);
-    await AsyncStorage.setItem('activeUser', JSON.stringify(userData));
+    await secureStorage.setItem('activeUser', userData);
     return '';
   };
 
   const logout = async () => {
     setUser(null);
-    await AsyncStorage.removeItem('activeUser');
+    await secureStorage.removeItem('activeUser');
     return true;
   };
 

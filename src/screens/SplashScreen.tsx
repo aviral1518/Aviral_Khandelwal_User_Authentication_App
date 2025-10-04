@@ -3,8 +3,9 @@ import React from 'react';
 import LottieView from 'lottie-react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../context/AuthContext';
+import { secureStorage } from '../utils/secureStorage';
+import { useTheme } from '../context/ThemeContext';
 
 type SplashScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Splash'>;
 
@@ -12,27 +13,26 @@ interface Props {
   navigation: SplashScreenNavigationProp;
 }
 
+interface ActiveUser {
+  name: string;
+  email: string;
+}
+
 const SplashScreen: React.FC<Props> = ({ navigation }) => {
     const {setUser} = useAuth();
+    const { theme } = useTheme();
 
     const handleUserData = React.useCallback(async () => {
     try {
-      const activeUserString = await AsyncStorage.getItem('activeUser');
+      const activeUser = await secureStorage.getItem<ActiveUser>('activeUser');
       
-      if (!activeUserString) {
+      if (!activeUser) {
         navigation.replace('Login');
         return;
       }
       
-      const activeUser = JSON.parse(activeUserString);
-      const userDataString = await AsyncStorage.getItem('userData');
-      let userData: Array<{email: string}> = [];
-      
-      if (userDataString) {
-        userData = JSON.parse(userDataString);
-      }
-      
-      const userFound = userData.find(u => u.email === activeUser.email);
+      const userData = await secureStorage.getItem<Array<{email: string}>>('userData');
+      const userFound = userData?.find(u => u.email === activeUser.email);
       
       if (userFound) {
         setUser(activeUser);
@@ -56,7 +56,7 @@ const SplashScreen: React.FC<Props> = ({ navigation }) => {
   }, [navigation, handleUserData]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LottieView 
         source={require('../../assets/JSONS/loading.json')}
         autoPlay
@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
   animation: {
     width: 500,
