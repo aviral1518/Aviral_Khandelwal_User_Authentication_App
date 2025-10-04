@@ -38,7 +38,7 @@ A React Native application demonstrating modern authentication, secure storage, 
 - **TypeScript** for type safety and better development experience
 - **Form Management** with react-hook-form for performance and reliability
 - **Schema Validation** using yup for consistent data validation
-- **Navigation** using React Navigation v6
+- **Navigation** using React Navigation v7
 - **Context API** for state management
 - **Debugging Support** with detailed logging for data flow
 
@@ -47,7 +47,7 @@ A React Native application demonstrating modern authentication, secure storage, 
 ### Core
 - React Native
 - TypeScript
-- React Navigation 6
+- React Navigation 7
 
 ### State Management & Storage
 - React Context API
