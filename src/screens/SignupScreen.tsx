@@ -53,6 +53,8 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
     if (error) {
       // You can handle the error here if needed
       console.error(error);
+    } else {
+      navigation.replace('Home');
     }
   };
 

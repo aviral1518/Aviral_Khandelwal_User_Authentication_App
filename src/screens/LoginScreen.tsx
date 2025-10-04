@@ -8,7 +8,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { TextInput, HelperText } from 'react-native-paper';
+import { TextInput, HelperText, Portal, Dialog, Button } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -31,6 +31,8 @@ const schema = yup.object().shape({
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const { login } = useAuth();
   
   const { control, handleSubmit, formState: { errors, isValid } } = useForm<FormData>({
@@ -45,8 +47,10 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const onSubmit = async (data: FormData) => {
     const error = await login(data.email, data.password);
     if (error) {
-      // You can handle the error here if needed
-      console.error(error);
+      setErrorMessage(error);
+      setErrorVisible(true);
+    } else {
+      navigation.replace('Home');
     }
   };
 
@@ -124,6 +128,18 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       >
         <Text style={styles.linkText}>Don't have an account? Sign up</Text>
       </TouchableOpacity>
+
+      <Portal>
+        <Dialog visible={errorVisible} onDismiss={() => setErrorVisible(false)}>
+          <Dialog.Title>Error</Dialog.Title>
+          <Dialog.Content>
+            <Text>{errorMessage}</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setErrorVisible(false)}>OK</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 };
