@@ -42,6 +42,25 @@ A React Native application demonstrating modern authentication, secure storage, 
 - **Context API** for state management
 - **Debugging Support** with detailed logging for data flow
 
+## 📱 App Demo
+
+### Demo Videos Location
+The demo videos for both iOS and Android platforms can be found in the following directory:
+
+```
+DemoVideos/
+├── iOS.mp4       # iOS platform demo
+└── Android.mp4   # Android platform demo
+```
+
+### Features Demonstrated in Demo:
+- 🔐 User Authentication Flow
+- 📝 Form Validation
+- 🌓 Theme Switching
+- 🔄 Persistent Login
+- ❌ Error Handling
+- 👁️ Password Visibility Toggle
+
 ## Technologies Used
 
 ### Core
