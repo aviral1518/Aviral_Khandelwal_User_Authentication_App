@@ -1,24 +1,24 @@
-# User Authentication App
+# 🔐 User Authentication App
 
 A React Native application demonstrating modern authentication, secure storage, and theming capabilities using industry best practices.
 
-## Features
+## ✨ Features
 
-### Authentication & Security
+### 🛡️ Authentication & Security
 - **Secure User Authentication** using Context API
 - **Encrypted Data Storage** using CryptoJS and AsyncStorage
 - **Secure Password Management** with react-native-keychain
 - **Form Validation** using react-hook-form and yup schema validation
 - **Persistent Authentication** with encrypted storage
 
-### User Interface
+### 🎨 User Interface
 - **Dark/Light Theme Support** with react-native-paper
 - **Theme Toggle** with persistent theme preference
 - **Material Design Components** from react-native-paper
 - **Responsive Layouts** using react-native-safe-area-context
 - **Password Visibility Toggle** for better user experience
 
-### Screens
+### 📱 Screens
 - **Login Screen**
   - Email and password validation
   - Error handling with visual feedback
@@ -34,7 +34,7 @@ A React Native application demonstrating modern authentication, secure storage, 
   - Theme toggle switch
   - Secure logout functionality
 
-### Developer Experience
+### 👨‍💻 Developer Experience
 - **TypeScript** for type safety and better development experience
 - **Form Management** with react-hook-form for performance and reliability
 - **Schema Validation** using yup for consistent data validation
@@ -64,7 +64,7 @@ A React Native application demonstrating modern authentication, secure storage, 
 - react-hook-form
 - yup validation
 
-# Getting Started
+# 🚀 Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
@@ -135,7 +135,7 @@ When you want to forcefully reload, for example to reset the state of your app, 
 - **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
 - **iOS**: Press <kbd>R</kbd> in iOS Simulator.
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 src/
@@ -153,7 +153,7 @@ src/
     └── secureStorage.ts   # Encrypted storage utility
 ```
 
-## Technical Details
+## 🔧 Technical Details
 
 ### Secure Storage Implementation
 
@@ -197,7 +197,7 @@ The app includes a comprehensive theming system:
 - Theme persistence
 - Runtime theme switching
 
-## Features Implementation
+## ⚙️ Features Implementation
 
 ### Authentication Context
 
@@ -239,7 +239,7 @@ The app includes a comprehensive theming system:
 - Automatic login if valid session exists
 - Secure logout functionality
 
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
@@ -247,6 +247,6 @@ The app includes a comprehensive theming system:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License.
